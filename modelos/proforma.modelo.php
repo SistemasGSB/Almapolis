@@ -124,7 +124,8 @@ class ModeloProforma{
 
 	}
 	static public function mdlDatosGrafico(){
-		$stmt = Conexion::conectar()->prepare("SELECT COUNT(asesor) as rep,asesor,MONTH(fecha_creacion) as mes FROM proforma WHERE YEAR(fecha_creacion)='2018' GROUP BY asesor,MONTH(fecha_creacion) ORDER BY MONTH(fecha_creacion)");
+
+		$stmt = Conexion::conectar()->prepare("SELECT COUNT(asesor) as rep,asesor,MONTH(fecha_creacion) as mes FROM proforma WHERE YEAR(fecha_creacion)='".date("Y")."' GROUP BY asesor,MONTH(fecha_creacion) ORDER BY MONTH(fecha_creacion)");
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}

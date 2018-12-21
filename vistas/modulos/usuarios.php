@@ -142,7 +142,7 @@ MODAL AGREGAR USUARIO
 
     <div class="modal-content">
 
-      <form role="form" method="post" enctype="multipart/form-data">
+      <form role="form" method="post" id="form_usuario" enctype="multipart/form-data">
 
         <!--=====================================
         CABEZA DEL MODAL
@@ -214,7 +214,7 @@ MODAL AGREGAR USUARIO
               
                 <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
 
-                <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar telefono" id="nuevoTelefono" required>
+                <input autocomplete="off" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar telefono" id="nuevoTelefono" maxlength="9" required>
 
               </div>
             </div>
@@ -299,7 +299,7 @@ MODAL EDITAR USUARIO
 
     <div class="modal-content">
 
-      <form role="form" method="post" enctype="multipart/form-data">
+      <form role="form" method="post" enctype="multipart/form-data" id="form_eusuario">
 
         <!--=====================================
         CABEZA DEL MODAL

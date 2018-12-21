@@ -368,7 +368,6 @@ CUERPO DOCUMENTO
 
   $('#btn_buscardni').click(function() {
         var dni_cliente=document.getElementById('dni_cliente').value;  
-        console.log("ENtro");      
         if(($("#dni_cliente").val().length > 7 && $("#dni_cliente").val().length < 9 ))
         {
       $.ajax({
@@ -531,6 +530,7 @@ CUERPO DOCUMENTO
 <script src="vistas/js/validar_proforma.js"></script>
 <script src="vistas/js/validar_proyecto.js"></script>
 <script src="vistas/js/estadistica.js"></script>
+
 
 
 </body>

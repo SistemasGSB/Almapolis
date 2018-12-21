@@ -10,28 +10,42 @@ class ModeloProyectos{
 
 	static public function mdlIngresarProyecto($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(proyecto,etapa,terreno,precio_lista,precio_metro,area,estado,fecha_separacion,dni_cliente,vendedor) VALUES (:proyecto,:etapa,:terreno,:precio_lista,:precio_metro,:area,0,'0000-00-00 00:00:00',0,'h')");
-
-		$stmt->bindParam(":proyecto", $datos["proyecto"], PDO::PARAM_STR);
-		$stmt->bindParam(":etapa", $datos["etapa"], PDO::PARAM_STR);
-		$stmt->bindParam(":terreno", $datos["terreno"], PDO::PARAM_STR);
-		$stmt->bindParam(":precio_lista", $datos["precio_lista"], PDO::PARAM_STR);
-		$stmt->bindParam(":precio_metro", $datos["precioM"], PDO::PARAM_STR);
-		$stmt->bindParam(":area", $datos["area"], PDO::PARAM_STR);
-
-		if($stmt->execute()){
-
-			return "ok";
-
-		}else{
-
-			return "error";
+		$stmtb = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE proyecto = :proyecto AND etapa=:etapa AND terreno = :terreno");
+		$stmtb->bindParam(":proyecto", $datos["proyecto"], PDO::PARAM_STR);
+		$stmtb->bindParam(":etapa", $datos["etapa"], PDO::PARAM_STR);
+		$stmtb->bindParam(":terreno", $datos["terreno"], PDO::PARAM_STR);
 		
+		$stmtb->execute();
+		$row=$stmtb->fetch();
+		echo $row;
+		if($stmtb->rowCount() > 0){
+			return "exi";
 		}
+		else{
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(proyecto,etapa,terreno,precio_lista,precio_metro,area,estado,fecha_separacion,dni_cliente,vendedor) VALUES (:proyecto,:etapa,:terreno,:precio_lista,:precio_metro,:area,0,'0000-00-00 00:00:00',0,'h')");
 
-		$stmt->close();
-		$stmt = null;
+			$stmt->bindParam(":proyecto", $datos["proyecto"], PDO::PARAM_STR);
+			$stmt->bindParam(":etapa", $datos["etapa"], PDO::PARAM_STR);
+			$stmt->bindParam(":terreno", $datos["terreno"], PDO::PARAM_STR);
+			$stmt->bindParam(":precio_lista", $datos["precio_lista"], PDO::PARAM_STR);
+			$stmt->bindParam(":precio_metro", $datos["precioM"], PDO::PARAM_STR);
+			$stmt->bindParam(":area", $datos["area"], PDO::PARAM_STR);
 
+			if($stmt->execute()){
+
+				return "ok";
+
+			}else{
+
+				return "error";
+			
+			}
+
+			$stmt->close();
+			$stmt = null;
+	
+		}
+		
 	}
 
 	/*=============================================

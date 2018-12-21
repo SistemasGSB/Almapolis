@@ -48,6 +48,28 @@ class ControladorProyectos{
 					</script>';
 
 				}
+				else{
+					if($respuesta=="exi"){
+								
+						echo'<script>
+
+							swal({
+								  type: "error",
+								  title: "¡El proyecto esta duplicado!",
+								  showConfirmButton: true,
+								  confirmButtonText: "Cerrar"
+								  }).then(function(result){
+									if (result.value) {
+
+									window.location = "proyectos";
+
+									}
+								})
+
+					  	</script>';
+
+					}
+				}
 
 
 			}else{

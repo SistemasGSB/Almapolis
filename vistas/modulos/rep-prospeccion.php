@@ -97,7 +97,8 @@
                       <a href="index.php?ruta=cotizador&id='.$value["id"].'"><button class="btn btn-warning btnEditarUsuario"><i class="fa fa-credit-card"></i></button></a>';
         if($_SESSION["perfil"] == "Administrador")
         {
-        echo              '<button class="btn btn-danger btnEliminarProspeccion" idProspeccion="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+        echo              '<a href="index.php?ruta=prospeccion&id_e='.$value["id"].'"><button class="btn btn-warning btnEditarProspeccion"><i class="fa fa-pencil"></i></button></a>
+          <button class="btn btn-danger btnEliminarProspeccion" idProspeccion="'.$value["id"].'"><i class="fa fa-times"></i></button>';
         }                                    
                       
         echo            '</div>  

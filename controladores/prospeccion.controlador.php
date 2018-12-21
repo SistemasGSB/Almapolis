@@ -2,74 +2,19 @@
 
 class ControladorProspeccion{
 
-	/*=============================================
-	CREAR CATEGORIAS
-	=============================================*/
-
-	static public function ctrCrearProspeccion(){
-
-		if(isset($_POST["nuevoProyecto"])){
-
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoProyecto"])){
-
-				$tabla = "proyectos";
-
-				$datos = $_POST["nuevoProyecto"];
-
-				$respuesta = ModeloProyectos::mdlIngresarProyecto($tabla, $datos);
-
-				if($respuesta == "ok"){
-
-					echo'<script>
-
-					swal({
-						  type: "success",
-						  title: "El proyecto ha sido guardada correctamente",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-									if (result.value) {
-
-									window.location = "proyectos";
-
-									}
-								})
-
-					</script>';
-
-				}
-
-
-			}else{
-
-				echo'<script>
-
-					swal({
-						  type: "error",
-						  title: "¡El proyecto no puede ir vacía o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-							if (result.value) {
-
-							window.location = "proyectos";
-
-							}
-						})
-
-			  	</script>';
-
-			}
-
-		}
-
-	}
-
 	static public function ctrBuscarProspeccion($item, $valor){
 
 		$tabla = "prospeccion";
 
 		$respuesta = ModeloProspeccion::mdlMostrarProspeccion($tabla, $item, $valor);
+
+		return $respuesta;
+	
+	}
+
+	static public function ctrEditPros($valor){
+
+		$respuesta = ModeloProspeccion::mdlEditPros($valor);
 
 		return $respuesta;
 	
@@ -94,64 +39,32 @@ class ControladorProspeccion{
 	EDITAR CATEGORIA
 	=============================================*/
 
-	static public function ctrEditarProyecto(){
+	static public function ctrEditarProspeccion(){
+		if(isset($_GET['id_c'])){
+			$datos = array('proyecto' => $_POST['proyectos'],'etapa' =>$_POST['etapa_proyecto'] ,'lote' => $_POST['lotes_proyecto'],'id' => $_POST['id_pro'] );
+			$tabla = "prospeccion";
 
-		if(isset($_POST["editarProyecto"])){
-
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarProyecto"])){
-
-				$tabla = "proyectos";
-
-				$datos = array("proyecto"=>$_POST["editarProyecto"],
-							   "id_proyecto"=>$_POST["idProyecto"]);
-
-				$respuesta = ModeloProyectos::mdlEditarProyecto($tabla, $datos);
-
-				if($respuesta == "ok"){
-
-					echo'<script>
+			$respuesta = ModeloProspeccion::mdlEditarProspeccion($tabla,$datos);
+			if($respuesta == "ok"){
+				echo'<script>
 
 					swal({
 						  type: "success",
-						  title: "El proyecto ha sido cambiado correctamente",
+						  title: "Tu Prospeccion ha sido cambiada correctamente",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
 									if (result.value) {
 
-									window.location = "proyectos";
+									window.location = "rep-prospeccion";
 
 									}
 								})
 
 					</script>';
 
-				}
-
-
-			}else{
-
-				echo'<script>
-
-					swal({
-						  type: "error",
-						  title: "¡El proyecto no puede ir vacío o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-							if (result.value) {
-
-							window.location = "proyectos";
-
-							}
-						})
-
-			  	</script>';
-
 			}
-
 		}
-
 	}
 
 	/*=============================================

@@ -16,6 +16,15 @@
     
     </ol>
 <br>
+
+<?php
+  
+  if (isset($_GET['id_e'])) {
+    $datos = ControladorProspeccion::ctrEditPros($_GET['id_e']);
+    # code...
+  }
+
+?>
 <section class="content">
 
     <!-- Default box -->
@@ -28,11 +37,28 @@
       <br>
     <div class="modal-content">
 
-      <form id="form_prospeccion" role="form" method="post" enctype="multipart/form-data">      
+      <?php
+        if(isset($_GET['id_e'])){
+          echo '<form id="form_prospeccion" action="index.php?ruta=prospeccion&id_c='.$_GET['id_e'].'" role="form" method="post" enctype="multipart/form-data">
+              <input type="hidden" id="id_pro" name="id_pro" value="'.$_GET['id_e'].'">';
+        }
+        else{
+          echo '<form id="form_prospeccion" role="form" method="post" enctype="multipart/form-data">';
+        }
+      ?>
+            
           <div class="box-body">
             <div class="form-group col-sm-4 pull-right">
               <h4 class="pull-left modal-title">Ingresar Tipo Cambio</h4>
-              <input type="text" class="pull-right modal-title" id="tipo_cambio" name="tipo_cambio" placeholder="S/." maxlength="4" required>
+              <?php
+                if(isset($_GET['id_e'])){
+                  echo "<input type='text' class='pull-right modal-title' id='tipo_cambio' name='tipo_cambio' placeholder='S/.'' maxlength='4' value='".$datos[0]['tipo_cambio']."'' required>";
+                }
+                else{
+                  echo "<input type='text' class='pull-right modal-title' id='tipo_cambio' name='tipo_cambio' placeholder='S/.'' maxlength='4' required>";    
+                }
+              ?>
+              
             </div>
             <div class="form-group col-sm-12">
               <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">Datos de Usuario</h4>
@@ -46,7 +72,17 @@
             <div class="form-group col-sm-5">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <input type="number" class="form-control" disabled id="dni_cliente" name="dni_cliente" placeholder="Ingrese D.N.I" required>
+            <?php
+                if(isset($_GET['id_e'])){
+                  echo "<input type='number' class='form-control' disabled id='dni_cliente' name='dni_cliente' placeholder='Ingrese D.N.I' value='".$datos[0]["dni_cliente"]."'                   required>";    
+                }
+                else{
+                  echo "<input type='number' class='form-control' disabled id='dni_cliente' name='dni_cliente' placeholder='Ingrese D.N.I'
+                   required>";
+                }
+            
+            ?>
+                  
                 </div>
              </div>
              <div class="form-group col-sm-1">
@@ -157,31 +193,59 @@
              <div class="form-group col-sm-3">
                   <label for="codigo" class="control-label">PROYECTOS</label>
                    <select class="form-control" id="proyectos" name="proyectos" required>
+              <?php
+                
+              
+              ?>
                     <option value="">Seleccionar Proyecto </option>
                     <?php
                       $cate=ControladorProyectos::ctrCategoriaP("proyecto");
                       foreach ($cate as $key => $value) {
-                        echo "<option value='".$value['proyecto']."'>".$value['proyecto']."</option>";
+                        if(isset($_GET['id_e'])){
+                          if($datos[0]['proyecto']==$value['proyecto'] ){
+                            echo "<option value='".$value['proyecto']."' selected='selected'>".$value['proyecto']."</option>";  
+                          }
+                          else{
+                            echo "<option value='".$value['proyecto']."'>".$value['proyecto']."</option>";
+                          }
+                          
+                        }
+                        else{
+                            echo "<option value='".$value['proyecto']."'>".$value['proyecto']."</option>";
+                        }
+                        
                       }
                     ?>
                    </select>
              </div>
              <div class="form-group col-sm-2">
                   <label for="codigo" class="control-label">ETAPA</label>
-                   <select class="form-control" disabled id="etapa_proyecto" name="etapa_proyecto" required>
+                   <select class="form-control"  id="etapa_proyecto" disabled name="etapa_proyecto" required>
                    <option value="">Seleccionar Etapa </option>
                    <?php
                       $cate=ControladorProyectos::ctrCategoriaP("etapa");
                       foreach ($cate as $key => $value) {
-                        echo "<option value='".$value['etapa']."'>".$value['etapa']."</option>";
+                        if(isset($_GET['id_e'])){
+                          if($datos[0]['etapa_proyecto']==$value['etapa'] ){
+                            echo "<option value='".$value['etapa']."' selected='selected'>".$value['etapa']."</option>";  
+                          }
+                          else{
+                            echo "<option value='".$value['etapa']."'>".$value['etapa']."</option>";
+                          }
+                        }
+                        else{
+                            echo "<option value='".$value['etapa']."'>".$value['etapa']."</option>";  
+                        }
+                        
                       }
                     ?>
                    </select>
              </div>
+
              <!--- Desactivado-->
              <div class="form-group col-sm-2">
                   <label for="codigo" class="control-label">LOTES</label>                  
-                   <select class="form-control" id="lotes_proyecto" disabled name="lotes_proyecto" required>
+                   <select class="form-control" id="lotes_proyecto" disabled  name="lotes_proyecto" required>
                     <option value="0">Seleccione</option>
                    </select>
              </div>
@@ -194,7 +258,7 @@
             </div>
           </div>
         </div>
-      
+         
 
         <!--=====================================
         PIE DEL MODAL
@@ -204,15 +268,28 @@
           <div class="errorTxt pull-left">
             
           </div>
-          <button type="submit" class="btn btn-success pull-rigth">Guardar</button>
+          <button type="submit" class="btn btn-success pull-rigth" id="btn_guar_edit">Guardar</button>
 
         </div>
-
+        <script src="vistas/js/prospeccion.js"></script>
+        <script type="text/javascript">
+                edit_prospeccion();
+                    
+        </script>   
         <?php
+          if(isset($_GET['id_c'])){
+            $editarProspeccion = new ControladorProspeccion();
 
-          $crearCliente = new ControladorClientes();
-          $crearCliente -> ctrCrearCliente();
 
+            echo "<p>AQUI</p>";
+            $editarProspeccion -> ctrEditarProspeccion();
+          }
+          else{
+            $crearCliente = new ControladorClientes();
+            $crearCliente -> ctrCrearCliente();
+  
+          }
+          
         ?>
 
       </form>

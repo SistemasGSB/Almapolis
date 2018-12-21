@@ -67,6 +67,12 @@ class ModeloProspeccion{
 	/*=============================================
 	MOSTRAR CATEGORIAS
 	=============================================*/
+	static public function mdlEditPros($valor){
+		$stmt = Conexion::conectar()->prepare("SELECT prospeccion.tipo_cambio as 'tipo_cambio',prospeccion.dni_cliente as 'dni_cliente',proyectos.proyecto as 'proyecto', proyectos.etapa as 'etapa_proyecto', proyectos.terreno as 'lotes_proyecto' FROM prospeccion INNER JOIN proyectos ON prospeccion.id_proyecto=proyectos.id_proyecto WHERE prospeccion.id=".$valor);
+		$stmt -> execute();
+		return $stmt -> fetchAll();
+	}
+
 
 	static public function mdlMostrarVista($tabla, $tabla2, $tabla3, $item, $valor){
 
@@ -100,12 +106,22 @@ class ModeloProspeccion{
 	EDITAR CATEGORIA
 	=============================================*/
 
-	static public function mdlEditarProyecto($tabla, $datos){
+	static public function mdlEditarProspeccion($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET proyecto = :proyecto WHERE id_proyecto = :id_proyecto");
+		$proyecto = $datos['proyecto'];
+		$etapa = $datos['etapa'];
+		$terreno = $datos['lote'];
+		$stmtb = Conexion::conectar()->prepare("SELECT * FROM proyectos WHERE proyecto = '$proyecto' AND etapa ='$etapa' AND terreno ='$terreno' ");
+		$stmtb -> execute();
 
-		$stmt -> bindParam(":proyecto", $datos["proyecto"], PDO::PARAM_STR);
-		$stmt -> bindParam(":id_proyecto", $datos["id_proyecto"], PDO::PARAM_INT);
+		$row = $stmtb->fetch(); 
+
+
+		echo json_encode($row);
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_proyecto = :proyecto WHERE id = :id_pros");
+
+		$stmt -> bindParam(":proyecto", $row["id_proyecto"], PDO::PARAM_STR);
+		$stmt -> bindParam(":id_pros", $datos["id"], PDO::PARAM_STR);
 
 		if($stmt->execute()){
 
